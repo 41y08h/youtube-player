@@ -79,6 +79,5 @@
 .volumeControl:hover .volumeBar,
 .volumeControl:active .volumeBar {
   width: 52px;
-  padding: 0 12px;
-  padding-left: 16px;
+  padding: 0 8px;
 }
