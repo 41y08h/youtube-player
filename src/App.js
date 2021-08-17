@@ -41,6 +41,11 @@ export default function App() {
     setProgress(event.target.currentTime || 0);
   }
 
+  function handleVolumeChange(event, value) {
+    const video = videoRef.current;
+    video.volume = value / 100;
+  }
+
   useEffect(() => {
     if (!isUserUpdatingTime) return;
     const video = videoRef.current;
@@ -75,7 +80,7 @@ export default function App() {
                 <VolumeIcon style={{ color: "white", fontSize: 28 }} />
               </button>
               <div className={styles.volumeBar}>
-                <VolumeBar />
+                <VolumeBar onChange={handleVolumeChange} max={100} />
               </div>
             </div>
             <Typography variant="body2" className={styles.duration}>
