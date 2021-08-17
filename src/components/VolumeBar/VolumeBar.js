@@ -6,7 +6,7 @@ const Main = withStyles({
     color: "white",
     height: 3,
     width: 52,
-    transition: "0.2s height ease"
+    transition: "0.2s height ease",
   },
   thumb: {
     height: 12,
@@ -15,21 +15,18 @@ const Main = withStyles({
     marginLeft: -6,
     borderRadius: 999,
     backgroundColor: "white",
-    boxShadow: "none !important"
+    boxShadow: "none !important",
   },
   track: {
-    height: 3
+    height: 3,
   },
   rail: {
-    height: 3
-  }
+    height: 3,
+  },
 })(Slider);
 
 const useStyles = makeStyles({
-  root: {
-    paddingLeft: 6,
-    paddingRight: 6,
-  }
+  root: {},
 });
 
 export default function VolumeBar(props) {

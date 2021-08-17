@@ -71,12 +71,14 @@
 
 .volumeBar {
   width: 0;
-  transition: width 0.2s ease, margin 0.2s ease;
-  overflow: "hidden";
+  transition: width 0.2s ease, padding 0.2s ease;
+  overflow: hidden;
+  box-sizing: content-box;
 }
 
 .volumeControl:hover .volumeBar,
 .volumeControl:active .volumeBar {
   width: 52px;
-  margin: 0 12px;
+  padding: 0 12px;
+  padding-left: 16px;
 }
