@@ -6,7 +6,8 @@ import ProgressBar from "./components/ProgressBar";
 import VolumeBar from "./components/VolumeBar";
 import toHHMMSS from "./utils/toHHMMSS";
 import Typography from "@material-ui/core/Typography";
-import VolumeIcon from "@material-ui/icons/VolumeUp";
+import VolumeUpIcon from "@material-ui/icons/VolumeUp";
+import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 
 const autoPlay = true;
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isUserUpdatingTime, setIsUserUpdatingTime] = useState(false);
+  const [volume, setVolume] = useState(1);
 
   function handlePlayPause() {
     setIsVideoPlaying((isPlaying) => {
@@ -43,7 +45,8 @@ export default function App() {
 
   function handleVolumeChange(event, value) {
     const video = videoRef.current;
-    video.volume = value / 100;
+    video.volume = (value || 0) / 100;
+    setVolume(value);
   }
 
   useEffect(() => {
@@ -53,6 +56,7 @@ export default function App() {
   }, [progress, isUserUpdatingTime]);
 
   const PlayPauseIcon = isVideoPlaying ? PauseIcon : PlayIcon;
+  const VolumeIcon = volume === 0 ? VolumeOffIcon : VolumeUpIcon;
   return (
     <div>
       <div className={styles.player}>
@@ -80,7 +84,11 @@ export default function App() {
                 <VolumeIcon style={{ color: "white", fontSize: 28 }} />
               </button>
               <div className={styles.volumeBar}>
-                <VolumeBar onChange={handleVolumeChange} max={100} />
+                <VolumeBar
+                  onChange={handleVolumeChange}
+                  value={volume}
+                  max={100}
+                />
               </div>
             </div>
             <Typography variant="body2" className={styles.duration}>
