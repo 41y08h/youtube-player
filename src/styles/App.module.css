@@ -22,7 +22,9 @@
 }
 
 .player:hover .controls,
-.player:hover .gradient {
+.player:hover .gradient,
+.player:active .controls,
+.player:active .gradient {
   display: unset;
   opacity: 1;
 }
@@ -54,13 +56,22 @@
 
 .controlsBottom {
   display: flex;
+  justify-content: space-between;
+}
+
+.left,
+right {
+  display: flex;
   align-items: center;
   color: #dddddd;
   padding: 0 2px;
 }
 
-.controlsBottom > *:not(:first-child) {
+.left > *:not(:first-child) {
   margin-left: 6px;
+}
+.right > *:not(:last-child) {
+  margin-right: 6px;
 }
 
 .volumeControl {
