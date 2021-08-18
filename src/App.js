@@ -16,7 +16,7 @@ export default function App() {
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isUserUpdatingTime, setIsUserUpdatingTime] = useState(false);
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(100);
 
   function handlePlayPause() {
     setIsVideoPlaying((isPlaying) => {
