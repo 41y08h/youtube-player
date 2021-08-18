@@ -8,6 +8,8 @@ import toHHMMSS from "./utils/toHHMMSS";
 import Typography from "@material-ui/core/Typography";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
+import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
 
 const autoPlay = true;
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
   const [isUserUpdatingTime, setIsUserUpdatingTime] = useState(false);
   const [volume, setVolume] = useState(100);
   const [isMute, setIsMute] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const playerRef = useRef();
 
   function handlePlayPause() {
     setIsVideoPlaying((isPlaying) => {
@@ -54,6 +58,49 @@ export default function App() {
     setIsMute((old) => !old);
   }
 
+  function toggleFullscreen() {
+    if (isFullScreen) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    } else {
+      const player = playerRef.current;
+
+      if (player.requestFullscreen) {
+        player.requestFullscreen();
+      } else if (player.mozRequestFullScreen) {
+        player.mozRequestFullScreen();
+      } else if (player.webkitRequestFullscreen) {
+        player.webkitRequestFullscreen();
+      } else if (player.msRequestFullscreen) {
+        player.msRequestFullscreen();
+      }
+    }
+  }
+
+  useEffect(() => {
+    const player = playerRef.current;
+
+    function onFullScreenChange() {
+      if (document.fullscreenElement === player) {
+        setIsFullScreen(true);
+      } else {
+        setIsFullScreen(false);
+      }
+    }
+
+    document.addEventListener("fullscreenchange", onFullScreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullScreenChange);
+    };
+  }, []);
+
   useEffect(() => {
     if (!isUserUpdatingTime) return;
     const video = videoRef.current;
@@ -64,7 +111,7 @@ export default function App() {
   const VolumeIcon = volume === 0 || isMute ? VolumeOffIcon : VolumeUpIcon;
   return (
     <div>
-      <div className={styles.player}>
+      <div className={styles.player} ref={playerRef}>
         <video
           muted={isMute}
           autoPlay={autoPlay}
@@ -82,24 +129,38 @@ export default function App() {
             max={duration}
           />
           <div className={styles.controlsBottom}>
-            <button className={styles.controlButton} onClick={handlePlayPause}>
-              <PlayPauseIcon style={{ color: "white", fontSize: 32 }} />
-            </button>
-            <div className={styles.volumeControl}>
-              <button className={styles.controlButton} onClick={toggleMute}>
-                <VolumeIcon style={{ color: "white", fontSize: 28 }} />
+            <div className={styles.left}>
+              <button
+                className={styles.controlButton}
+                onClick={handlePlayPause}
+              >
+                <PlayPauseIcon style={{ color: "white", fontSize: 32 }} />
               </button>
-              <div className={styles.volumeBar}>
-                <VolumeBar
-                  onChange={handleVolumeChange}
-                  value={volume}
-                  max={100}
-                />
+              <div className={styles.volumeControl}>
+                <button className={styles.controlButton} onClick={toggleMute}>
+                  <VolumeIcon style={{ color: "white", fontSize: 28 }} />
+                </button>
+                <div className={styles.volumeBar}>
+                  <VolumeBar
+                    onChange={handleVolumeChange}
+                    value={volume}
+                    max={100}
+                  />
+                </div>
               </div>
+
+              <Typography variant="body2" className={styles.duration}>
+                {toHHMMSS(progress)} / {toHHMMSS(duration)}
+              </Typography>
             </div>
-            <Typography variant="body2" className={styles.duration}>
-              {toHHMMSS(progress)} / {toHHMMSS(duration)}
-            </Typography>
+            <div>
+              <button
+                className={styles.controlButton}
+                onClick={toggleFullscreen}
+              >
+                <FullscreenIcon style={{ color: "white", fontSize: 32 }} />
+              </button>
+            </div>
           </div>
         </div>
         <div className={styles.gradient} />
