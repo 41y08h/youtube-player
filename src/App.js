@@ -17,6 +17,7 @@ export default function App() {
   const [progress, setProgress] = useState(0);
   const [isUserUpdatingTime, setIsUserUpdatingTime] = useState(false);
   const [volume, setVolume] = useState(100);
+  const [isMute, setIsMute] = useState(false);
 
   function handlePlayPause() {
     setIsVideoPlaying((isPlaying) => {
@@ -49,6 +50,10 @@ export default function App() {
     setVolume(value);
   }
 
+  function toggleMute() {
+    setIsMute((old) => !old);
+  }
+
   useEffect(() => {
     if (!isUserUpdatingTime) return;
     const video = videoRef.current;
@@ -56,11 +61,12 @@ export default function App() {
   }, [progress, isUserUpdatingTime]);
 
   const PlayPauseIcon = isVideoPlaying ? PauseIcon : PlayIcon;
-  const VolumeIcon = volume === 0 ? VolumeOffIcon : VolumeUpIcon;
+  const VolumeIcon = volume === 0 || isMute ? VolumeOffIcon : VolumeUpIcon;
   return (
     <div>
       <div className={styles.player}>
         <video
+          muted={isMute}
           autoPlay={autoPlay}
           onLoadedMetadata={onLoadedMetaData}
           onTimeUpdate={onTimeUpdate}
@@ -80,7 +86,7 @@ export default function App() {
               <PlayPauseIcon style={{ color: "white", fontSize: 32 }} />
             </button>
             <div className={styles.volumeControl}>
-              <button className={styles.controlButton}>
+              <button className={styles.controlButton} onClick={toggleMute}>
                 <VolumeIcon style={{ color: "white", fontSize: 28 }} />
               </button>
               <div className={styles.volumeBar}>
