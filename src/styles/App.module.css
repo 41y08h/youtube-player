@@ -24,7 +24,9 @@
 .player:hover .controls,
 .player:hover .gradient,
 .player:active .controls,
-.player:active .gradient {
+.player:active .gradient,
+.player.controlsVisible .controls,
+.player.controlsVisible .gradient {
   display: unset;
   opacity: 1;
 }
@@ -60,7 +62,7 @@
 }
 
 .left,
-right {
+.right {
   display: flex;
   align-items: center;
   color: #dddddd;

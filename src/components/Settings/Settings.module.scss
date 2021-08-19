@@ -1,0 +1,65 @@
+@mixin item {
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  width: 100%;
+}
+
+@mixin menuItem {
+  @include item;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.root {
+  width: fit-content;
+  margin-left: auto;
+  background-color: rgba(28, 28, 28, 0.9);
+  padding: 8px 0;
+  color: white;
+  width: 251px;
+  max-height: 300px;
+  overflow: auto;
+
+  .menuHeading {
+    @include item;
+    color: inherit;
+    border: none;
+    padding: 0 8px;
+    border-bottom: 1px solid rgb(70, 69, 69);
+
+    > :first-child {
+      // icon
+      margin-right: 8px;
+    }
+  }
+
+  .menuChangerItem {
+    @include menuItem;
+    padding: 0 16px;
+    justify-content: space-between;
+
+    .chevronArea {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .settingsItem {
+    @include menuItem;
+    padding: 0 40px;
+
+    &.isChecked {
+      padding: 0 16px;
+
+      > :first-child {
+        // icon
+        margin-right: 8px;
+      }
+    }
+  }
+}

@@ -10,6 +10,8 @@ import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Settings from "./components/Settings";
 
 const autoPlay = true;
 export default function App() {
@@ -22,6 +24,7 @@ export default function App() {
   const [isMute, setIsMute] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const playerRef = useRef();
+  const [isMenuActive, setIsMenuActive] = useState(false);
 
   function handlePlayPause() {
     setIsVideoPlaying((isPlaying) => {
@@ -84,6 +87,10 @@ export default function App() {
     }
   }
 
+  function toggleSettingsMenu() {
+    setIsMenuActive((old) => !old);
+  }
+
   useEffect(() => {
     const player = playerRef.current;
 
@@ -109,10 +116,16 @@ export default function App() {
 
   const PlayPauseIcon = isVideoPlaying ? PauseIcon : PlayIcon;
   const VolumeIcon = volume === 0 || isMute ? VolumeOffIcon : VolumeUpIcon;
-  const FSIcon = isFullScreen ? FullscreenExitIcon :  FullscreenIcon ;
+  const FSIcon = isFullScreen ? FullscreenExitIcon : FullscreenIcon;
+
   return (
     <div>
-      <div className={styles.player} ref={playerRef}>
+      <div
+        className={[styles.player, isMenuActive && styles.controlsVisible]
+          .filter(Boolean)
+          .join(" ")}
+        ref={playerRef}
+      >
         <video
           muted={isMute}
           autoPlay={autoPlay}
@@ -123,6 +136,7 @@ export default function App() {
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
         />
         <div className={styles.controls}>
+          {isMenuActive && <Settings />}
           <ProgressBar
             onChange={handleVideoTimeChange}
             onChangeCommitted={handleVideoTimeChangeCommitted}
@@ -154,7 +168,13 @@ export default function App() {
                 {toHHMMSS(progress)} / {toHHMMSS(duration)}
               </Typography>
             </div>
-            <div>
+            <div className={styles.right}>
+              <button
+                className={styles.controlButton}
+                onClick={toggleSettingsMenu}
+              >
+                <SettingsIcon style={{ color: "white", fontSize: 24 }} />
+              </button>
               <button
                 className={styles.controlButton}
                 onClick={toggleFullscreen}
