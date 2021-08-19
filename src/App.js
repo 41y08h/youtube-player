@@ -109,6 +109,7 @@ export default function App() {
 
   const PlayPauseIcon = isVideoPlaying ? PauseIcon : PlayIcon;
   const VolumeIcon = volume === 0 || isMute ? VolumeOffIcon : VolumeUpIcon;
+  const FSIcon = isFullScreen ? FullscreenExitIcon :  FullscreenIcon ;
   return (
     <div>
       <div className={styles.player} ref={playerRef}>
@@ -158,7 +159,7 @@ export default function App() {
                 className={styles.controlButton}
                 onClick={toggleFullscreen}
               >
-                <FullscreenIcon style={{ color: "white", fontSize: 32 }} />
+                <FSIcon style={{ color: "white", fontSize: 32 }} />
               </button>
             </div>
           </div>
