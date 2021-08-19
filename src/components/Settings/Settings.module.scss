@@ -25,6 +25,10 @@
   max-height: 300px;
   overflow: auto;
 
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
   .menuHeading {
     @include item;
     color: inherit;
