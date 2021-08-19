@@ -63,14 +63,9 @@ export default function Settings() {
     ),
     speed: (
       <Menu heading="Playback speed">
-        <SettingsItem>0.25</SettingsItem>
-        <SettingsItem>0.5</SettingsItem>
-        <SettingsItem>0.75</SettingsItem>
-        <SettingsItem isChecked>1</SettingsItem>
-        <SettingsItem>1.25</SettingsItem>
-        <SettingsItem>1.5</SettingsItem>
-        <SettingsItem>1.75</SettingsItem>
-        <SettingsItem>2</SettingsItem>
+        {[0.25, 0.5, 0.75, 1, 1.5, 1.75, 2].map((item) => (
+          <SettingsItem>{item}</SettingsItem>
+        ))}
       </Menu>
     ),
   };
