@@ -25,6 +25,7 @@ export default function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const playerRef = useRef();
   const [isMenuActive, setIsMenuActive] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
   function handlePlayPause() {
     setIsVideoPlaying((isPlaying) => {
@@ -91,6 +92,20 @@ export default function App() {
     setIsMenuActive((old) => !old);
   }
 
+  function handleOnPlaybackSpeedChange(value) {
+    const video = videoRef.current;
+    video.playbackRate = value;
+
+    setPlaybackSpeed(value);
+  }
+
+  function getSettingChangeHandler(fn) {
+    return (...args) => {
+      fn(...args);
+      setIsMenuActive(false);
+    };
+  }
+
   useEffect(() => {
     const player = playerRef.current;
 
@@ -136,7 +151,14 @@ export default function App() {
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
         />
         <div className={styles.controls}>
-          {isMenuActive && <Settings />}
+          {isMenuActive && (
+            <Settings
+              onPlaybackSpeedChange={getSettingChangeHandler(
+                handleOnPlaybackSpeedChange
+              )}
+              playbackSpeed={playbackSpeed}
+            />
+          )}
           <ProgressBar
             onChange={handleVideoTimeChange}
             onChangeCommitted={handleVideoTimeChangeCommitted}

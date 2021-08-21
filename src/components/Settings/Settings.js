@@ -5,7 +5,7 @@ import { useState } from "react";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import CheckIcon from "@material-ui/icons/Check";
 
-export default function Settings() {
+export default function Settings({ onPlaybackSpeedChange, playbackSpeed }) {
   const [activeMenu, setActiveMenu] = useState("default");
 
   function MenuChangerItem({ children, goToMenu, value }) {
@@ -24,10 +24,10 @@ export default function Settings() {
     );
   }
 
-  function SettingsItem({ children, isChecked }) {
+  function SettingsItem({ children, isChecked, ...props }) {
     return (
       <li
-        onClick
+        {...props}
         className={[styles.settingsItem, isChecked && styles.isChecked]
           .filter(Boolean)
           .join(" ")}
@@ -53,26 +53,31 @@ export default function Settings() {
     );
   }
 
-  const activeMenuJSX = {
-    default: (
-      <ul>
-        <MenuChangerItem goToMenu="speed" value="Normal">
-          Playback speed
-        </MenuChangerItem>
-      </ul>
-    ),
-    speed: (
-      <Menu heading="Playback speed">
-        {[0.25, 0.5, 0.75, 1, 1.5, 1.75, 2].map((item) => (
-          <SettingsItem>{item}</SettingsItem>
-        ))}
-      </Menu>
-    ),
-  };
-
   return (
     <div className={styles.root}>
-      {activeMenuJSX[activeMenu] || activeMenuJSX["default"]}
+      {activeMenu === "default" && (
+        <ul>
+          <MenuChangerItem
+            goToMenu="speed"
+            value={playbackSpeed === 1 ? "Normal" : playbackSpeed}
+          >
+            Playback speed
+          </MenuChangerItem>
+        </ul>
+      )}
+      {activeMenu === "speed" && (
+        <Menu heading="Playback speed">
+          {[0.25, 0.5, 0.75, 1, 1.5, 1.75, 2].map((item) => (
+            <SettingsItem
+              key={item}
+              isChecked={playbackSpeed === item}
+              onClick={() => onPlaybackSpeedChange(item)}
+            >
+              {item}
+            </SettingsItem>
+          ))}
+        </Menu>
+      )}
     </div>
   );
 }
