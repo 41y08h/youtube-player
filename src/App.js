@@ -12,6 +12,8 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Settings from "./components/Settings";
+import ControlButton from "./components/ControlButton";
+import mergeClassNames from "./lib/mergeClassNames";
 
 const autoPlay = true;
 export default function App() {
@@ -24,7 +26,7 @@ export default function App() {
   const [isMute, setIsMute] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const playerRef = useRef();
-  const [isMenuActive, setIsMenuActive] = useState(false);
+  const [isSettingsActive, setIsSettingsActive] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
   function handlePlayPause() {
@@ -89,7 +91,7 @@ export default function App() {
   }
 
   function toggleSettingsMenu() {
-    setIsMenuActive((old) => !old);
+    setIsSettingsActive((old) => !old);
   }
 
   function handleOnPlaybackSpeedChange(value) {
@@ -102,7 +104,7 @@ export default function App() {
   function getSettingChangeHandler(fn) {
     return (...args) => {
       fn(...args);
-      setIsMenuActive(false);
+      setIsSettingsActive(false);
     };
   }
 
@@ -136,9 +138,10 @@ export default function App() {
   return (
     <div>
       <div
-        className={[styles.player, isMenuActive && styles.controlsVisible]
-          .filter(Boolean)
-          .join(" ")}
+        className={mergeClassNames(
+          styles.player,
+          isSettingsActive && styles.controlsVisible
+        )}
         ref={playerRef}
       >
         <video
@@ -151,7 +154,7 @@ export default function App() {
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
         />
         <div className={styles.controls}>
-          {isMenuActive && (
+          {isSettingsActive && (
             <Settings
               onPlaybackSpeedChange={getSettingChangeHandler(
                 handleOnPlaybackSpeedChange
@@ -167,16 +170,13 @@ export default function App() {
           />
           <div className={styles.controlsBottom}>
             <div className={styles.left}>
-              <button
-                className={styles.controlButton}
-                onClick={handlePlayPause}
-              >
-                <PlayPauseIcon style={{ color: "white", fontSize: 32 }} />
-              </button>
+              <ControlButton onClick={handlePlayPause}>
+                <PlayPauseIcon style={{ fontSize: 32 }} />
+              </ControlButton>
               <div className={styles.volumeControl}>
-                <button className={styles.controlButton} onClick={toggleMute}>
-                  <VolumeIcon style={{ color: "white", fontSize: 28 }} />
-                </button>
+                <ControlButton onClick={toggleMute}>
+                  <VolumeIcon style={{ fontSize: 28 }} />
+                </ControlButton>
                 <div className={styles.volumeBar}>
                   <VolumeBar
                     onChange={handleVolumeChange}
@@ -185,24 +185,17 @@ export default function App() {
                   />
                 </div>
               </div>
-
               <Typography variant="body2" className={styles.duration}>
                 {toHHMMSS(progress)} / {toHHMMSS(duration)}
               </Typography>
             </div>
             <div className={styles.right}>
-              <button
-                className={styles.controlButton}
-                onClick={toggleSettingsMenu}
-              >
-                <SettingsIcon style={{ color: "white", fontSize: 24 }} />
-              </button>
-              <button
-                className={styles.controlButton}
-                onClick={toggleFullscreen}
-              >
-                <FSIcon style={{ color: "white", fontSize: 32 }} />
-              </button>
+              <ControlButton onClick={toggleSettingsMenu}>
+                <SettingsIcon style={{ fontSize: 24 }} />
+              </ControlButton>
+              <ControlButton onClick={toggleFullscreen}>
+                <FSIcon style={{ fontSize: 32 }} />
+              </ControlButton>
             </div>
           </div>
         </div>
