@@ -6,10 +6,11 @@
 
   &.isChecked {
     padding: 0 16px;
+    padding-left: 10px;
 
     > :first-child {
       // icon
-      margin-right: 8px;
+      margin-right: 12px;
     }
   }
 }
