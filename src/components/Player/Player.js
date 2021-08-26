@@ -15,14 +15,14 @@ import Settings from "../Settings";
 import ControlButton from "../ControlButton";
 import mergeClassNames from "../../lib/mergeClassNames";
 
-export default function Player({ autoPlay = true, src }) {
+export default function Player({ autoPlay = true, muted, src }) {
   const videoRef = useRef();
-  const [isVideoPlaying, setIsVideoPlaying] = useState(autoPlay);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(autoPlay && muted);
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isUserUpdatingTime, setIsUserUpdatingTime] = useState(false);
   const [volume, setVolume] = useState(100);
-  const [isMute, setIsMute] = useState(false);
+  const [isMute, setIsMute] = useState(muted);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const playerRef = useRef();
   const [isSettingsActive, setIsSettingsActive] = useState(false);
@@ -47,6 +47,7 @@ export default function Player({ autoPlay = true, src }) {
 
   function onLoadedMetaData(event) {
     setDuration(event.target.duration);
+    setIsVideoPlaying(!videoRef.current.paused);
   }
 
   function onTimeUpdate(event) {
@@ -107,6 +108,10 @@ export default function Player({ autoPlay = true, src }) {
     };
   }
 
+  function onPlay() {
+    setIsVideoPlaying(true);
+  }
+
   useEffect(() => {
     const player = playerRef.current;
 
@@ -147,6 +152,7 @@ export default function Player({ autoPlay = true, src }) {
         autoPlay={autoPlay}
         onLoadedMetadata={onLoadedMetaData}
         onTimeUpdate={onTimeUpdate}
+        onPlay={onPlay}
         className={styles.video}
         ref={videoRef}
         src={src}
