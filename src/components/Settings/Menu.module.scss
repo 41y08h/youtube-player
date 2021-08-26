@@ -1,0 +1,14 @@
+@import "./base";
+
+.menuHeading {
+  @include item;
+  color: inherit;
+  border: none;
+  padding: 0 8px;
+  border-bottom: 1px solid rgb(70, 69, 69);
+
+  > :first-child {
+    // icon
+    margin-right: 8px;
+  }
+}

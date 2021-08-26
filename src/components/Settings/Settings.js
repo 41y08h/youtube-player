@@ -1,35 +1,8 @@
-import Typography from "@material-ui/core/Typography";
-import styles from "./Settings.module.scss";
 import { useState } from "react";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import CheckIcon from "@material-ui/icons/Check";
+import Menu from "./Menu";
+import MenuItem from "./MenuItem";
 import NavigationItem from "./NavigationItem";
-
-function Menu({ children, heading, onBack }) {
-  return (
-    <div>
-      <button className={styles.menuHeading} onClick={onBack}>
-        <ChevronLeftIcon />
-        <Typography variant="subtitle2">{heading}</Typography>
-      </button>
-      <ul>{children}</ul>
-    </div>
-  );
-}
-
-function SettingsItem({ children, isChecked, ...props }) {
-  return (
-    <li
-      {...props}
-      className={[styles.settingsItem, isChecked && styles.isChecked]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      {isChecked && <CheckIcon style={{ fontSize: 18 }} />}
-      <Typography variant="subtitle2">{children}</Typography>
-    </li>
-  );
-}
+import styles from "./Settings.module.scss";
 
 export default function Settings({ onPlaybackSpeedChange, playbackSpeed }) {
   const [activeMenu, setActiveMenu] = useState("default");
@@ -51,13 +24,13 @@ export default function Settings({ onPlaybackSpeedChange, playbackSpeed }) {
       {activeMenu === "speed" && (
         <Menu heading="Playback speed" onBack={getMenuChanger("default")}>
           {[0.25, 0.5, 0.75, 1, 1.5, 1.75, 2].map((item) => (
-            <SettingsItem
+            <MenuItem
               key={item}
               isChecked={playbackSpeed === item}
               onClick={() => onPlaybackSpeedChange(item)}
             >
               {item}
-            </SettingsItem>
+            </MenuItem>
           ))}
         </Menu>
       )}

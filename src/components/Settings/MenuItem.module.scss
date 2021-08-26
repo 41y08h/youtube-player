@@ -1,0 +1,15 @@
+@import "./base";
+
+.menuItem {
+  @include menuItem;
+  padding: 0 40px;
+
+  &.isChecked {
+    padding: 0 16px;
+
+    > :first-child {
+      // icon
+      margin-right: 8px;
+    }
+  }
+}
