@@ -1,19 +1,4 @@
-@mixin item {
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  width: 100%;
-}
-
-@mixin menuItem {
-  @include item;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-}
+@import "./base";
 
 .root {
   width: fit-content;
@@ -39,17 +24,6 @@
     > :first-child {
       // icon
       margin-right: 8px;
-    }
-  }
-
-  .menuChangerItem {
-    @include menuItem;
-    padding: 0 16px;
-    justify-content: space-between;
-
-    .chevronArea {
-      display: flex;
-      align-items: center;
     }
   }
 

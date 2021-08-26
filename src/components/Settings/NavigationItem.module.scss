@@ -1,0 +1,12 @@
+@import "./base";
+
+.navigationItem {
+  @include menuItem;
+  padding: 0 16px;
+  justify-content: space-between;
+
+  .chevronArea {
+    display: flex;
+    align-items: center;
+  }
+}
